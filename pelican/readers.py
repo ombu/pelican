@@ -197,14 +197,16 @@ class MarkdownReader(BaseReader):
         output = {}
         for name, value in meta.items():
             name = name.lower()
+            # all values should be joined,
+            # to handle multi-line meta properly
+            joined_value = "\n".join(value)
             if name == "summary":
-                summary_values = "\n".join(value)
                 # reset the markdown instance to clear any state
                 self._md.reset()
-                summary = self._md.convert(summary_values)
+                summary = self._md.convert(joined_value)
                 output[name] = self.process_metadata(name, summary)
             else:
-                output[name] = self.process_metadata(name, value[0])
+                output[name] = self.process_metadata(name, joined_value)
         return output
 
     def read(self, source_path):
