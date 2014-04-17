@@ -206,7 +206,8 @@ class MarkdownReader(BaseReader):
                 summary = self._md.convert(joined_value)
                 output[name] = self.process_metadata(name, summary)
             else:
-                output[name] = self.process_metadata(name, joined_value)
+                output[name] = self.process_metadata(name, value if len(
+                    value) > 1 else joined_value)
         return output
 
     def read(self, source_path):
